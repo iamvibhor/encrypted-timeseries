@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Encrypted Time Series</title>
+</head>
+<body>
+  <h2>Recent Records</h2>
+  <ul id="records"></ul>
+
+  <script>
+    async function fetchData() {
+      const res = await fetch("/data");
+      const data = await res.json();
+
+      const list = document.getElementById("records");
+      list.innerHTML = "";
+
+      data.forEach(item => {
+        const li = document.createElement("li");
+        li.innerText = `${item.name} | ${item.origin} → ${item.destination} | ${item.timestamp}`;
+        list.appendChild(li);
+      });
+    }
+
+    setInterval(fetchData, 5000);
+    fetchData();
+  </script>
+</body>
+</html>
