@@ -1,0 +1,45 @@
+services:
+
+  mongo:
+    image: mongo:7
+    container_name: mongo
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+
+  listener:
+    build: ./listener
+    container_name: listener
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/streamdb
+      - PORT=8080
+      - API_PORT=3000
+    ports:
+      - "8080:8080"
+      - "3001:3000"   # avoid host conflict
+
+  emitter:
+    build: ./emitter
+    container_name: emitter
+    restart: unless-stopped
+    depends_on:
+      - listener
+    environment:
+      - WS_URL=ws://listener:8080
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    restart: unless-stopped
+    depends_on:
+      - listener
+    environment:
+      - API_URL=http://listener:3000/records
+    ports:
+      - "10001:5000"
+
+volumes:
+  mongo_data:
