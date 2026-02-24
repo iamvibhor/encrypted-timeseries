@@ -1,48 +1,49 @@
-Running with Docker -
-From project root
+Start the Application
+
+From the project root directory:
 
 docker compose up --build
 
-Services exposed:
+This will:
+
+Build all services
+
+Start MongoDB
+
+Start the WebSocket listener
+
+Start the emitter
+
+Start the frontend
+
+View Running Containers
+docker ps
+View Logs
+
+All services (live):
+
+docker compose logs -f
+
+Specific service:
+
+docker compose logs -f listener
+docker compose logs -f emitter
+docker compose logs -f frontend
+docker compose logs -f mongo
+Access Points
+
+REST API:
+http://localhost:3001/records
 
 Frontend:
 http://localhost:10001
 
-Stats API:
-http://localhost:4500/stats
+WebSocket endpoint:
+ws://localhost:8080
 
-MongoDB:
-localhost:27017
-================================
-Manual Run (Without Docker)
+Stop the Application
+docker compose down
 
-Start MongoDB locally.
+To also remove volumes:
 
-Start listener:
-
-cd listener
-npm install
-node listener.js
-
-Start emitter:
-
-cd emitter
-npm install
-node emitter.js
-
-Start frontend:
-
-cd frontend
-npm install
-node server.js
-
-
-Notes
-
-The listener silently discards invalid or corrupted payloads.
-
-MongoDB uses a time-series collection with timestamp as the time field.
-
-Batches are emitted every 10 seconds.
-
-The system is intentionally simple to show encryption, validation, and streaming flow.
+docker compose down -v
