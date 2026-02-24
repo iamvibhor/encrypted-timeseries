@@ -1,0 +1,48 @@
+Running with Docker -
+From project root
+
+docker compose up --build
+
+Services exposed:
+
+Frontend:
+http://localhost:10001
+
+Stats API:
+http://localhost:4500/stats
+
+MongoDB:
+localhost:27017
+================================
+Manual Run (Without Docker)
+
+Start MongoDB locally.
+
+Start listener:
+
+cd listener
+npm install
+node listener.js
+
+Start emitter:
+
+cd emitter
+npm install
+node emitter.js
+
+Start frontend:
+
+cd frontend
+npm install
+node server.js
+
+
+Notes
+
+The listener silently discards invalid or corrupted payloads.
+
+MongoDB uses a time-series collection with timestamp as the time field.
+
+Batches are emitted every 10 seconds.
+
+The system is intentionally simple to show encryption, validation, and streaming flow.
